@@ -1,6 +1,9 @@
 const { selectTopics } = require("../models/topics");
 
-exports.getTopics = async (req, res) => {
-  const topics = await selectTopics();
-  res.send({ topics });
+exports.getTopics = (req, res, next) => {
+  selectTopics()
+    .then((topics) => {
+      res.send({ topics });
+    })
+    .catch(next);
 };
