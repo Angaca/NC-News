@@ -37,6 +37,26 @@ describe("NC-News", () => {
   });
   describe("Articles", () => {
     describe("GET", () => {
+      it("200 - /api/articles", async () => {
+        const {
+          body: { articles },
+        } = await request.get("/api/articles").expect(200);
+
+        articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              title: expect.any(String),
+              article_id: expect.any(Number),
+              topic: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+
+        expect(articles).toBeSorted({ descending: true, key: "created_at" });
+      });
       it("200 - /api/articles/:article_id", async () => {
         const {
           body: { article },
@@ -146,6 +166,23 @@ describe("NC-News", () => {
           .send({ inc_votes: 1 });
 
         expect(msg).toBe("Invalid Input");
+      });
+    });
+  });
+  describe("Users", () => {
+    describe("GET", () => {
+      it("200 - /api/users", async () => {
+        const {
+          body: { users },
+        } = await request.get("/api/users").expect(200);
+
+        users.forEach((user) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+            })
+          );
+        });
       });
     });
   });

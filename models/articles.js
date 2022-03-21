@@ -22,3 +22,11 @@ exports.updateArticleById = async (articleId, incVotes) => {
   if (!rows[0]) return promiseReject();
   return rows[0];
 };
+
+exports.selectArticles = async () => {
+  const { rows } = await db.query(
+    `SELECT * FROM articles 
+    ORDER BY created_at DESC;`
+  );
+  return rows;
+};
