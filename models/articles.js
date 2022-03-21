@@ -3,7 +3,11 @@ const { promiseReject } = require("../errors");
 
 exports.selectArticleById = async (articleId) => {
   const { rows } = await db.query(
-    "SELECT * FROM articles WHERE article_id = $1;",
+    `SELECT articles.*, CAST(SUM(comments.article_id) AS INTEGER) AS comment_count FROM articles
+    JOIN comments
+    ON articles.article_id = comments.article_id
+    WHERE articles.article_id = $1
+    GROUP BY articles.article_id;`,
     [articleId]
   );
   if (!rows[0]) return promiseReject();

@@ -71,6 +71,7 @@ describe("NC-News", () => {
             topic: "mitch",
             created_at: expect.any(String),
             votes: 100,
+            comment_count: expect.any(Number),
           })
         );
       });
